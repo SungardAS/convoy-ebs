@@ -1,12 +1,14 @@
 FROM sungardas/rancher-convoy
 
 RUN mkdir /scripts \
- && apk update \
- && apk add python \
- && apk add py-pip \
- && apk add curl \
- && apk add bash \
- && pip install awscli
+  && apt-get update \
+  && apt-get install -y libaio1 \
+    ca-certificates \
+    python-pip \
+    python-dev \
+    build-essential
+  && rm -rf /var/lib/apt/lists/*
+  && pip install awscli
 
 ADD http://s3.amazonaws.com/ec2metadata/ec2-metadata /usr/local/bin/ec2-metadata
 RUN chmod 755 /usr/local/bin/ec2-metadata
