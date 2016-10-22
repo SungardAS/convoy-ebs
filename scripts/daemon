@@ -1,0 +1,15 @@
+#!/bin/bash
+
+echo "unix:///var/run/convoy/convoy-ebs.sock" > /etc/docker/plugins/convoy-ebs.spec
+
+echo "Will enter namesapce for $(ps --no-header --pid $$ -o ppid)"
+
+DOCKER_PID=$(cat /host/var/run/docker.pid)
+PROC_PATH=${PROC_PATH:-/host/proc}
+NS_PID=${NS_PID:-$DOCKER_PID}
+
+convoy -s /host/var/run/convoy/convoy-ebs.sock \
+  daemon \
+  --mnt-ns $PROC_PATH/$NS_PID/ns/mnt \
+  --drivers ebs \
+  $@

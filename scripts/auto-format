@@ -1,0 +1,16 @@
+#!/bin/bash
+set -ex
+
+DEVS=(${AUTOFORMAT})
+
+for dev in ${DEVS[@]}; do
+    if [ -b "${dev}" ]; then
+
+        if ! od -A d -N 1048576 ${dev} | head -n 3 | diff ./od-1m0 - >/dev/null 2>&1; then
+            # do not auto-format if the disk does not begin with 1MB filled with 00
+            continue
+        fi
+
+        mkfs.ext4 ${dev}
+    fi
+done

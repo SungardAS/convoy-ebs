@@ -1,0 +1,28 @@
+#!/bin/ash
+set -e
+
+AWS_REGION=$(ec2-metadata-value --availability-zone | sed 's/.$//')
+DEFAULT_STORAGE_DRIVER="convoy-ebs"
+
+CONVOY_SOCK="${CONVOY_SOCK:-/host/var/run/convoy/convoy-ebs.sock}"
+STORAGE_DRIVER="${STORAGE_DRIVER:-$DEFAULT_STORAGE_DRIVER}"
+VOLUME_NAME="${VOLUME_NAME:-$VOLUME_ID}"
+
+if [ -n "$GREEDY" ]; then
+  aws ec2 detach-volume --volume-id $VOLUME_ID --region $AWS_REGION || true
+fi
+
+echo "VOLUME_NAME=$VOLUME_NAME"
+echo "VOLUME_ID=$VOLUME_ID"
+
+CREATE_OUTPUT=$(convoy -s $CONVOY_SOCK \
+  --verbose \
+  create \
+  --driver=$STORAGE_DRIVER \
+  --name=$VOLUME_NAME \
+  -o id=$VOLUME_ID)
+
+DEVICE=$(echo $CREATE_OUTPUT | grep -oP "(?<=Device\":\s\")[^\"]+")
+
+/scripts/auto-format $DEVICE
+
