@@ -20,7 +20,7 @@ RUN mv /scripts/ec2-metadata-value /usr/local/bin/ec2-metadata-value
 
 WORKDIR /scripts
 
-ENTRYPOINT ["/scripts/entry.sh"]
+ENTRYPOINT ["/scripts/entry"]
 
 CMD ["daemon"]
 
