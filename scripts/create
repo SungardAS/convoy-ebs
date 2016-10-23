@@ -18,9 +18,8 @@ echo "VOLUME_ID=$VOLUME_ID"
 CREATE_OUTPUT=$(convoy -s $CONVOY_SOCK \
   --verbose \
   create \
-  --driver=$STORAGE_DRIVER \
-  --name=$VOLUME_NAME \
-  -o id=$VOLUME_ID)
+  --id=$VOLUME_ID \
+  $VOLUME_NAME)
 
 DEVICE=$(echo $CREATE_OUTPUT | grep -oP "(?<=Device\":\s\")[^\"]+")
 

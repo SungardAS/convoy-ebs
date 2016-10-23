@@ -4,6 +4,7 @@ RUN mkdir /scripts \
   && apt-get update \
   && apt-get install -y libaio1 \
     ca-certificates \
+    curl \
     python-pip \
     python-dev \
     build-essential \
