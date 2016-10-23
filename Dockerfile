@@ -1,7 +1,6 @@
 FROM sungardas/rancher-convoy
 
-RUN mkdir /scripts \
-  && apt-get update \
+RUN apt-get update \
   && apt-get install -y libaio1 \
     ca-certificates \
     curl \
@@ -14,11 +13,14 @@ RUN mkdir /scripts \
 ADD http://s3.amazonaws.com/ec2metadata/ec2-metadata /usr/local/bin/ec2-metadata
 RUN chmod 755 /usr/local/bin/ec2-metadata
 
-ADD /od-1m0 /
-ADD /scripts/* /scripts/
-RUN chmod +x /scripts/*
+RUN mkdir /scripts \
+  && /assets
 
-RUN mv /scripts/ec2-metadata-value /usr/local/bin/ec2-metadata-value
+ADD /od-1m0 /assets/od-1m0
+ADD /scripts/* /scripts/
+
+RUN chmod +x /scripts/* \
+  && mv /scripts/ec2-metadata-value /usr/local/bin/ec2-metadata-value
 
 WORKDIR /scripts
 
