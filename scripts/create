@@ -9,6 +9,11 @@ STORAGE_DRIVER="${STORAGE_DRIVER:-$DEFAULT_STORAGE_DRIVER}"
 VOLUME_NAME="${VOLUME_NAME:-$VOLUME_ID}"
 
 if [ -n "$GREEDY" ]; then
+  convoy -s $CONVOY_SOCK \
+    delete \
+    -r \
+    $VOLUME_NAME || true
+
   aws ec2 detach-volume --volume-id $VOLUME_ID --region $AWS_REGION || true
 fi
 
@@ -22,6 +27,8 @@ CREATE_OUTPUT=$(convoy -s $CONVOY_SOCK \
   $VOLUME_NAME)
 
 DEVICE=$(echo $CREATE_OUTPUT | grep -oP "(?<=Device\":\s\")[^\"]+")
+
+echo $DEVICE
 
 /scripts/auto-format $DEVICE
 
