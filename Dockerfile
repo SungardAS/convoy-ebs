@@ -14,6 +14,7 @@ RUN mkdir /scripts \
 ADD http://s3.amazonaws.com/ec2metadata/ec2-metadata /usr/local/bin/ec2-metadata
 RUN chmod 755 /usr/local/bin/ec2-metadata
 
+ADD od-1m0 /
 ADD /scripts/* /scripts/
 RUN chmod +x /scripts/*
 
