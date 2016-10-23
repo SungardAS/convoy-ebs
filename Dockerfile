@@ -16,7 +16,7 @@ RUN chmod 755 /usr/local/bin/ec2-metadata
 RUN mkdir /scripts \
   && mkdir /assets
 
-ADD /od-1m0 /assets/od-1m0
+ADD /assets/* /assets/
 ADD /scripts/* /scripts/
 
 RUN chmod +x /scripts/* \
