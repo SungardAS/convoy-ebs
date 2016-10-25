@@ -15,6 +15,8 @@ if [ -n "$GREEDY" ]; then
     $VOLUME_NAME || true
 
   aws ec2 detach-volume --volume-id $VOLUME_ID --region $AWS_REGION || true
+
+  aws ec2 wait volume-available --volume-ids $VOLUME_ID
 fi
 
 echo "VOLUME_NAME=$VOLUME_NAME"
