@@ -14,7 +14,7 @@ if [ -n "$GREEDY" ]; then
     -r \
     $VOLUME_NAME || true
 
-  aws ec2 detach-volume --volume-id $VOLUME_ID --region $AWS_REGION || true
+  aws ec2 detach-volume --force --volume-id $VOLUME_ID --region $AWS_REGION || true
 
   aws ec2 wait volume-available --volume-ids $VOLUME_ID --region $AWS_REGION
 fi
